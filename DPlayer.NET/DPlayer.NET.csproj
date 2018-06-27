@@ -4,7 +4,15 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
   <ItemGroup>
+    <Folder Include="Format\" />
+    <Folder Include="Utils\" />
+    <Folder Include="Track\" />
     <Folder Include="Player\" />
   </ItemGroup>
 
