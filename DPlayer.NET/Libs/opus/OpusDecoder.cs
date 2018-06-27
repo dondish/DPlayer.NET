@@ -23,12 +23,12 @@ namespace DPlayer.NET.Libs.opus
                 outputSampleRate != 16000 &&
                 outputSampleRate != 24000 &&
                 outputSampleRate != 48000)
-                throw new ArgumentOutOfRangeException("inputSamplingRate");
+                throw new ArgumentOutOfRangeException("outputSamplingRate");
             if (outputChannels != 1 && outputChannels != 2)
-                throw new ArgumentOutOfRangeException("inputChannels");
+                throw new ArgumentOutOfRangeException("outputChannels");
 
             IntPtr error;
-            IntPtr decoder = API.opus_decoder_create(outputSampleRate, outputChannels, out error);
+            IntPtr decoder = OpusLibrary.opus_decoder_create(outputSampleRate, outputChannels, out error);
             if ((Errors)error != Errors.OK)
             {
                 throw new Exception("Exception occured while creating decoder");
@@ -67,9 +67,9 @@ namespace DPlayer.NET.Libs.opus
                 decodedPtr = new IntPtr((void*)bdec);
 
                 if (inputOpusData != null)
-                    length = API.opus_decode(_decoder, inputOpusData, dataLength, decodedPtr, frameCount, 0);
+                    length = OpusLibrary.opus_decode(_decoder, inputOpusData, dataLength, decodedPtr, frameCount, 0);
                 else
-                    length = API.opus_decode(_decoder, null, 0, decodedPtr, frameCount, (ForwardErrorCorrection) ? 1 : 0);
+                    length = OpusLibrary.opus_decode(_decoder, null, 0, decodedPtr, frameCount, (ForwardErrorCorrection) ? 1 : 0);
             }
             decodedLength = length * 2;
             if (length < 0)
@@ -126,7 +126,7 @@ namespace DPlayer.NET.Libs.opus
 
             if (_decoder != IntPtr.Zero)
             {
-                API.opus_decoder_destroy(_decoder);
+                OpusLibrary.opus_decoder_destroy(_decoder);
                 _decoder = IntPtr.Zero;
             }
 

@@ -16,4 +16,8 @@
     <Folder Include="Player\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MP3Sharp" Version="1.0.4" />
+  </ItemGroup>
+
 </Project>

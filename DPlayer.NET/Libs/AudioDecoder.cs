@@ -6,6 +6,6 @@ namespace DPlayer.NET.Libs
 {
     interface AudioDecoder
     {
-        byte[] Decode(byte[] inputOpusData, int dataLength, out int decodedLength);
+        byte[] Decode(byte[] input, int dataLength, out int decodedLength);
     }
 }

@@ -29,7 +29,7 @@ namespace DPlayer.NET.Libs.opus
                 throw new ArgumentOutOfRangeException("inputChannels");
 
             IntPtr error;
-            IntPtr encoder = API.opus_encoder_create(inputSamplingRate, inputChannels, (int)application, out error);
+            IntPtr encoder = OpusLibrary.opus_encoder_create(inputSamplingRate, inputChannels, (int)application, out error);
             if ((Errors)error != Errors.OK)
             {
                 throw new Exception("Exception occured while creating encoder");
@@ -67,7 +67,7 @@ namespace DPlayer.NET.Libs.opus
             fixed (byte* benc = encoded)
             {
                 encodedPtr = new IntPtr((void*)benc);
-                length = API.opus_encode(_encoder, inputPcmSamples, frames, encodedPtr, sampleLength);
+                length = OpusLibrary.opus_encode(_encoder, inputPcmSamples, frames, encodedPtr, sampleLength);
             }
             encodedLength = length;
             if (length < 0)
@@ -132,7 +132,7 @@ namespace DPlayer.NET.Libs.opus
                 if (disposed)
                     throw new ObjectDisposedException("OpusEncoder");
                 int bitrate;
-                var ret = API.opus_encoder_ctl(_encoder, Ctl.GetBitrateRequest, out bitrate);
+                var ret = OpusLibrary.opus_encoder_ctl(_encoder, Ctl.GetBitrateRequest, out bitrate);
                 if (ret < 0)
                     throw new Exception("Encoder error - " + ((Errors)ret).ToString());
                 return bitrate;
@@ -141,7 +141,7 @@ namespace DPlayer.NET.Libs.opus
             {
                 if (disposed)
                     throw new ObjectDisposedException("OpusEncoder");
-                var ret = API.opus_encoder_ctl(_encoder, Ctl.SetBitrateRequest, value);
+                var ret = OpusLibrary.opus_encoder_ctl(_encoder, Ctl.SetBitrateRequest, value);
                 if (ret < 0)
                     throw new Exception("Encoder error - " + ((Errors)ret).ToString());
             }
@@ -158,7 +158,7 @@ namespace DPlayer.NET.Libs.opus
                     throw new ObjectDisposedException("OpusEncoder");
 
                 int fec;
-                int ret = API.opus_encoder_ctl(_encoder, Ctl.GetInbandFECRequest, out fec);
+                int ret = OpusLibrary.opus_encoder_ctl(_encoder, Ctl.GetInbandFECRequest, out fec);
                 if (ret < 0)
                     throw new Exception("Encoder error - " + ((Errors)ret).ToString());
 
@@ -170,7 +170,7 @@ namespace DPlayer.NET.Libs.opus
                 if (_encoder == IntPtr.Zero)
                     throw new ObjectDisposedException("OpusEncoder");
 
-                var ret = API.opus_encoder_ctl(_encoder, Ctl.SetInbandFECRequest, value ? 1 : 0);
+                var ret = OpusLibrary.opus_encoder_ctl(_encoder, Ctl.SetInbandFECRequest, value ? 1 : 0);
                 if (ret < 0)
                     throw new Exception("Encoder error - " + ((Errors)ret).ToString());
             }
@@ -191,7 +191,7 @@ namespace DPlayer.NET.Libs.opus
 
             if (_encoder != IntPtr.Zero)
             {
-                API.opus_encoder_destroy(_encoder);
+                OpusLibrary.opus_encoder_destroy(_encoder);
                 _encoder = IntPtr.Zero;
             }
 

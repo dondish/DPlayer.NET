@@ -9,7 +9,7 @@ namespace DPlayer.NET.Libs.opus
     /// Wraps the Opus API.
     /// Code was taken from: https://github.com/DevJohnC/Opus.NET
     /// </summary>
-    internal class API
+    internal class OpusLibrary
     {
         [DllImport("opus.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern IntPtr opus_encoder_create(int Fs, int channels, int application, out IntPtr error);
