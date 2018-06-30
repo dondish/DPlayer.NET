@@ -7,26 +7,46 @@ namespace DPlayer.NET.Libs.mp3
 {
     internal class MP3Library32
     {
-        [DllImport("libmpg32.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern errors mpg123_init();
+        internal const string libname = "libmpg32.dll";
 
-        [DllImport("libmpg32.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern Errors mpg123_init();
+
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void mpg123_exit();
 
-        [DllImport("libmpg32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern IntPtr mpg123_new(string decoder, IntPtr error);
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern IntPtr mpg123_new(string decoder, out IntPtr error);
 
-        [DllImport("libmpg32.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void mpg123_delete(IntPtr handle);
 
-        [DllImport("libmpg32.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern errors mpg123_open(IntPtr handle, string path);
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern Errors mpg123_decode(IntPtr handle, IntPtr inMemory, UIntPtr inMemSize, IntPtr outMemory, UIntPtr outMemSize, ref UIntPtr done);
 
-        [DllImport("libmpg32.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern errors mpg123_close(IntPtr handle);
+    }
+    internal class MP3Library64
+    {
+        internal const string libname = "libmpg64.dll";
+
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern Errors mpg123_init();
+
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void mpg123_exit();
+
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern IntPtr mpg123_new(string decoder, out IntPtr error);
+
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void mpg123_delete(IntPtr handle);
+
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern Errors mpg123_decode(IntPtr handle, IntPtr inMemory, UIntPtr inMemSize, IntPtr outMemory, UIntPtr outMemSize, ref UIntPtr done);
+
     }
 
-    enum errors : int
+    enum Errors : int
     {
         MPG123_DONE = -12,
         MPG123_NEW_FORMAT = -11,
@@ -76,5 +96,13 @@ namespace DPlayer.NET.Libs.mp3
         MPG123_BAD_CUSTOM_IO,
         MPG123_LFS_OVERFLOW,
         MPG123_INT_OVERFLOW
+    }
+
+    enum Encodings { 
+        mpg123_text_unknown = 0, mpg123_text_utf8 = 1, 
+        mpg123_text_latin1 = 2, mpg123_text_icy = 3, 
+        mpg123_text_cp1252 = 4, mpg123_text_utf16 = 5, 
+        mpg123_text_utf16bom = 6, mpg123_text_utf16be = 7, 
+        mpg123_text_max = 7 
     }
 }

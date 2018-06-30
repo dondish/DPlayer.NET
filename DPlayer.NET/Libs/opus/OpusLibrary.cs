@@ -28,20 +28,6 @@ namespace DPlayer.NET.Libs.opus
 
         [DllImport("opus.dll", CallingConvention = CallingConvention.Cdecl)]
         internal static extern int opus_decode(IntPtr st, byte[] data, int len, IntPtr pcm, int frame_size, int decode_fec);
-
-        [DllImport("opus.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int opus_encoder_ctl(IntPtr st, Ctl request, int value);
-
-        [DllImport("opus.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int opus_encoder_ctl(IntPtr st, Ctl request, out int value);
-    }
-
-    public enum Ctl : int
-    {
-        SetBitrateRequest = 4002,
-        GetBitrateRequest = 4003,
-        SetInbandFECRequest = 4012,
-        GetInbandFECRequest = 4013
     }
 
     /// <summary>

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace DPlayer.NET.Libs
 {
     interface AudioDecoder
     {
-        byte[] Decode(byte[] input, int dataLength, out int decodedLength);
+        int Decode(MemoryStream input, MemoryStream output);
     }
 }
