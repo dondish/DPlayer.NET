@@ -33,7 +33,7 @@ namespace DPlayer.NET.Libs.opus
     /// <summary>
     /// Supported coding modes.
     /// </summary>
-    public enum Application
+    public enum Application : int
     {
         /// <summary>
         /// Best for most VoIP/videoconference applications where listening quality and intelligibility matter most.
@@ -49,7 +49,7 @@ namespace DPlayer.NET.Libs.opus
         Restricted_LowLatency = 2051
     }
 
-    public enum Errors
+    public enum Errors : int
     {
         /// <summary>
         /// No error.

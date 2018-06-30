@@ -5,44 +5,79 @@ using System.Runtime.InteropServices;
 
 namespace DPlayer.NET.Libs.mp3
 {
+    internal class MP3Library
+    {
+        internal static int Init()
+        {
+            return Environment.Is64BitOperatingSystem ? MP3Library64.Init64() : MP3Library32.Init32();
+        }
+
+        internal static void Exit()
+        {
+            if (Environment.Is64BitOperatingSystem)
+                MP3Library64.Exit64();
+            else
+                MP3Library32.Exit32();
+        }
+
+        internal static IntPtr New(string decoder, out IntPtr error)
+        {
+            return Environment.Is64BitOperatingSystem ? MP3Library64.New64(decoder, out error) : MP3Library32.New32(decoder, out error);
+        }
+
+        internal static void Delete(IntPtr handle)
+        {
+            if (Environment.Is64BitOperatingSystem)
+            {
+                MP3Library64.Delete64(handle);
+            } else
+            {
+                MP3Library32.Delete32(handle);
+            }
+        }
+        internal static int Decode(IntPtr handle, IntPtr inMemory, UIntPtr inMemSize, IntPtr outMemory, UIntPtr outMemSize, ref UIntPtr done)
+        {
+            return Environment.Is64BitOperatingSystem ? MP3Library64.Decode64(handle, inMemory, inMemSize, outMemory, outMemSize, ref done) : MP3Library32.Decode32(handle, inMemory, inMemSize, outMemory, outMemSize, ref done);
+        }
+    }
     internal class MP3Library32
     {
         internal const string libname = "libmpg32.dll";
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern Errors mpg123_init();
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "mpg123_init")]
+        internal static extern int Init32();
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void mpg123_exit();
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "mpg123_exit")]
+        internal static extern void Exit32();
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern IntPtr mpg123_new(string decoder, out IntPtr error);
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "mpg123_new")]
+        internal static extern IntPtr New32(string decoder, out IntPtr error);
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void mpg123_delete(IntPtr handle);
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "mpg123_delete")]
+        internal static extern void Delete32(IntPtr handle);
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern Errors mpg123_decode(IntPtr handle, IntPtr inMemory, UIntPtr inMemSize, IntPtr outMemory, UIntPtr outMemSize, ref UIntPtr done);
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "mpg123_decode")]
+        internal static extern int Decode32(IntPtr handle, IntPtr inMemory, UIntPtr inMemSize, IntPtr outMemory, UIntPtr outMemSize, ref UIntPtr done);
 
     }
     internal class MP3Library64
     {
         internal const string libname = "libmpg64.dll";
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern Errors mpg123_init();
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "mpg123_init")]
+        internal static extern int Init64();
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void mpg123_exit();
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "mpg123_exit")]
+        internal static extern void Exit64();
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern IntPtr mpg123_new(string decoder, out IntPtr error);
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "mpg123_new")]
+        internal static extern IntPtr New64(string decoder, out IntPtr error);
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void mpg123_delete(IntPtr handle);
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "mpg123_delete")]
+        internal static extern void Delete64(IntPtr handle);
 
-        [DllImport(libname, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern Errors mpg123_decode(IntPtr handle, IntPtr inMemory, UIntPtr inMemSize, IntPtr outMemory, UIntPtr outMemSize, ref UIntPtr done);
+        [DllImport(libname, CallingConvention = CallingConvention.Cdecl, EntryPoint = "mpg123_decode")]
+        internal static extern int Decode64(IntPtr handle, IntPtr inMemory, UIntPtr inMemSize, IntPtr outMemory, UIntPtr outMemSize, ref UIntPtr done);
 
     }
 

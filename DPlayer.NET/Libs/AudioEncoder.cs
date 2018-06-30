@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace DPlayer.NET.Libs
 {
     interface AudioEncoder : IDisposable
     {
         /// <summary>
-        /// Encodes the stuff you need to the AudioEncoder type (Opus)
+        /// Encodes the input stream (PCM audio bytes) to the output (Opus encoded bytes)
         /// </summary>
-        /// <param name="inputPcmSamples">
-        /// Samples of pcm to encode
-        /// </param>
-        /// <param name="sampleLength">
-        /// The length of the sample
-        /// </param>
-        /// <param name="encodedLength">
-        /// The encoded length int to initialize
-        /// </param>
+        /// <param name="input">PCM MemoryStream</param>
+        /// <param name="output">Opus MemoryStream</param>
+        /// <param name="frameSize">The amount of PCM samples in one channel</param>
         /// <returns></returns>
-        byte[] Encode(byte[] inputPcmSamples, int sampleLength, out int encodedLength);
+        int Encode(MemoryStream input, MemoryStream output, int frameSize);
     }
 }

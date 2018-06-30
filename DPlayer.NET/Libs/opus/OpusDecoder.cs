@@ -12,14 +12,12 @@ namespace DPlayer.NET.Libs.opus
     {
         private IntPtr _decoder;
         private int channels;
-        private int sampleRate;
 
         public OpusDecoder(int sampleRate, int channels)
         {
             IntPtr error;
             _decoder = OpusLibrary.opus_decoder_create(sampleRate, channels, out error);
             this.channels = channels;
-            this.sampleRate = sampleRate;
 
             if ((Errors)error != Errors.OK)
             {
@@ -33,12 +31,13 @@ namespace DPlayer.NET.Libs.opus
                 throw new ObjectDisposedException("OpusDecoder");
 
             IntPtr decodedPtr;
+            output.SetLength(0);
             byte[] buffer =  output.GetBuffer();
             int res;
             fixed (byte* add = buffer)
             {
                 decodedPtr = new IntPtr((void*)add);
-                res = OpusLibrary.opus_decode(_decoder, input.ToArray(), Convert.ToInt32(input.Length - input.Position), decodedPtr, Convert.ToInt32(input.Length - input.Position), 0);
+                res = OpusLibrary.opus_decode(_decoder, input.ToArray(), Convert.ToInt32(input.Length - input.Position), decodedPtr, Convert.ToInt32(output.Length - output.Position) / channels, 0);
             }
             if ((Errors)res != Errors.OK)
                 throw new InvalidOperationException("Error decoding");

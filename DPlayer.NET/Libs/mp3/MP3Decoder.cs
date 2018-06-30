@@ -1,50 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 namespace DPlayer.NET.Libs.mp3
 {
     class MP3Decoder : AudioDecoder
     {
         private IntPtr handle;
+      
 
-        public static MP3Decoder Create(int outputSampleRate, int outputChannels) 
+        public MP3Decoder()
         {
-            if (outputSampleRate != 44100)
-                throw new ArgumentOutOfRangeException("outputSamplingRate");
-            if (outputChannels != 1 && outputChannels != 2)
-                throw new ArgumentOutOfRangeException("outputChannels");
+            Errors error = (Errors) MP3Library.Init();
+            if (error != Errors.MPG123_OK)
+                throw new InvalidOperationException("Couldn't create the MP3 decoder, Error " + error);
 
-            if ((Environment.Is64BitOperatingSystem? MP3Library64.mpg123_init() : MP3Library32.mpg123_init()) != Errors.MPG123_OK)
-                throw new Exception("Exception occured while creating decoder");
+            IntPtr err;
+            handle = MP3Library.New(null, out err);
 
-            IntPtr error;
-            IntPtr handle = Environment.Is64BitOperatingSystem ? MP3Library64.mpg123_new(null, out error): MP3Library32.mpg123_new(null, out error);
-            
-            if ((Errors) error != Errors.MPG123_OK)
-                throw new Exception("Exception occured while creating decoder");
-
-            return new MP3Decoder(handle);
+            if (error != Errors.MPG123_OK)
+                throw new InvalidOperationException("Couldn't create the MP3 decoder, Error " + error);
         }
 
-        public MP3Decoder(IntPtr handle)
+        /// <summary>
+        /// Decodes mp3 to PCM samples.
+        /// </summary>
+        /// <param name="input">MP3 in a MemoryStream</param>
+        /// <param name="output">PCM samples in a MemoryStream</param>
+        /// <returns>The amount of samples decoded</returns>
+        public unsafe int Decode(MemoryStream input, MemoryStream output)
         {
-            this.handle = handle;
-        }
+            if (disposed)
+                throw new ObjectDisposedException("MP3Decoder");
 
+            IntPtr inPtr;
+            IntPtr outPtr;
+            byte[] buf = output.GetBuffer();
+            byte[] inbuf = output.GetBuffer();
+            UIntPtr done = new UIntPtr(0);
+            fixed (byte* bufptr = buf, inbufptr = inbuf)
+            {
+                inPtr = new IntPtr(inbufptr);
+                outPtr = new IntPtr(bufptr);
 
+                int err = MP3Library.Decode(handle, inPtr, new UIntPtr(Convert.ToUInt32(input.Length - input.Position)), outPtr, new UIntPtr(Convert.ToUInt32(output.Length - output.Position)*2), ref done);
+                while ((Errors) err == Errors.MPG123_NEW_FORMAT)  // Try out new format 
+                {
+                    err = MP3Library.Decode(handle, inPtr, new UIntPtr(0), outPtr, new UIntPtr(Convert.ToUInt32(output.Length - output.Position) * 2), ref done);
+                }
 
-        public unsafe byte[] Decode(byte[] inputMp3Data, int dataLength, out int decodedLength)
-        {
-            
+                if ((Errors) err < Errors.MPG123_OK && (Errors) err != Errors.MPG123_NEED_MORE) // oopsie doopsie didn't worky
+                {
+                    throw new InvalidOperationException("Failed to decode, error " + (Errors)err);
+                }
+            }
+
+            output.Position = done.ToUInt32() / 2;
+            output.SetLength(output.Position);
+            output.Position = 0;
+            return (int) done.ToUInt32();
         }
 
         ~MP3Decoder() {
             Dispose();
-        }
-
-        private bool isMpegVersion1(byte[] buf, int offset)
-        {
-
         }
 
         private bool disposed;
@@ -57,18 +75,12 @@ namespace DPlayer.NET.Libs.mp3
 
             if (handle != IntPtr.Zero)
             {
-                if (Environment.Is64BitOperatingSystem)
-                {
-                    MP3Library64.mpg123_delete(handle);
-                    MP3Library64.mpg123_exit();
-                } else
-                {
-                    MP3Library32.mpg123_delete(handle);
-                    MP3Library32.mpg123_exit();
-                }
+                MP3Library.Delete(handle);
+                MP3Library.Exit();
             }
 
             disposed = true;
         }
+
     }
 }
