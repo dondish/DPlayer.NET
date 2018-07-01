@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Folder Include="Format\" />
+    <Folder Include="Libs\vorbis\" />
     <Folder Include="Utils\" />
     <Folder Include="Track\" />
     <Folder Include="Player\" />

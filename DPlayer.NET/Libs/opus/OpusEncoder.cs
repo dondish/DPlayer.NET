@@ -7,7 +7,7 @@ namespace DPlayer.NET.Libs.opus
 {
     /// <summary>
     /// Opus codec wrapper.
-    /// Code was taken from: https://github.com/DevJohnC/Opus.NET
+    /// Code was modified from: https://github.com/DevJohnC/Opus.NET
     /// </summary>
     public class OpusEncoder : AudioEncoder
     {

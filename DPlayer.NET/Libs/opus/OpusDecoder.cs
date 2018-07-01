@@ -25,6 +25,12 @@ namespace DPlayer.NET.Libs.opus
             }
         }
 
+        /// <summary>
+        /// Decodes the Opus encoded bytes to PCM audio samples
+        /// </summary>
+        /// <param name="input">The memorystream with the bytes</param>
+        /// <param name="output">The memorystream to put the decoded bytes to</param>
+        /// <returns>The amount of samples done</returns>
         public unsafe int Decode(MemoryStream input, MemoryStream output)
         {
             if (disposed)
@@ -53,6 +59,10 @@ namespace DPlayer.NET.Libs.opus
         }
 
         private bool disposed;
+
+        /// <summary>
+        /// Disposes all the resources used to clean the memory
+        /// </summary>
         public void Dispose()
         {
             if (disposed)

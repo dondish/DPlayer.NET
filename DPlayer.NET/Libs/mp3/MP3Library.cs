@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// So I won't document this as much since it is basically the mpg123 library wrapper.
+/// </summary>
 namespace DPlayer.NET.Libs.mp3
 {
     internal class MP3Library

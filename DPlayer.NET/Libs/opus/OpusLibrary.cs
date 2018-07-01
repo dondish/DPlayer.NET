@@ -7,7 +7,7 @@ namespace DPlayer.NET.Libs.opus
 {
     /// <summary>
     /// Wraps the Opus API.
-    /// Code was taken from: https://github.com/DevJohnC/Opus.NET
+    /// Code was modified from: https://github.com/DevJohnC/Opus.NET
     /// </summary>
     internal class OpusLibrary
     {
