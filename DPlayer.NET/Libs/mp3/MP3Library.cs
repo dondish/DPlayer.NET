@@ -4,7 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// So I won't document this as much since it is basically the mpg123 library wrapper.
+/// A wrapper for mpg123
 /// </summary>
 namespace DPlayer.NET.Libs.mp3
 {

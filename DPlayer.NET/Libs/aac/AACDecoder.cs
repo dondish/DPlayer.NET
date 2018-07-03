@@ -6,15 +6,15 @@ using System.Text;
 namespace DPlayer.NET.Libs.aac
 {
     /// <summary>
-    /// Opposed to the Opus and MP3, the AAC decoder will first need to be filled up with data to decode and then decoded frame by frame
+    /// Opposed to the Opus and MP3, the AAC decoder will first need to be filled up with data to decode and then be decoded frame by frame
     /// </summary>
-    class AACDecoder
+    class AACDecoder : IDisposable
     {
-        IntPtr _decoder;
+        private IntPtr _decoder;
 
-        AACDecoder()
+        public AACDecoder()
         {
-            _decoder = AACLibrary.Open(0, 3); // the layer will be 3 for now, maybe will need to check some stuff later.
+            _decoder = AACLibrary.Open(0, 1); // the layer will be 1 for now, maybe will need to check some stuff later.
         }
 
 
@@ -54,10 +54,10 @@ namespace DPlayer.NET.Libs.aac
             fixed (byte* buf = buffer)
             {
                 IntPtr inbuf = new IntPtr((void*)buf);
-                read = AACLibrary.Fill(_decoder, inbuf, Convert.ToUInt32(input.Position), Convert.ToUInt32(input.Length));
+                read = AACLibrary.Fill(_decoder, inbuf, Convert.ToUInt32(input.Position), Convert.ToUInt32(input.Length-input.Position));
             }
 
-            if (read < 0) // error happened
+            if (read != 0) // error happened
             {
                 throw new InvalidOperationException("Error filling decoder, errors - " + read);
             }

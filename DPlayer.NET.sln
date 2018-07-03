@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DPlayer.NET", "DPlayer.NET\DPlayer.NET.csproj", "{9A6F7BF5-A557-4B6A-A1CE-34A6C43DCEFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DPlayer.NET", "DPlayer.NET\DPlayer.NET.csproj", "{9A6F7BF5-A557-4B6A-A1CE-34A6C43DCEFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord.NET-demo", "Discord.NET-demo\Discord.NET-demo.csproj", "{95F748AC-9B0D-4468-8C24-D335F4B29F41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSharpPlus-demo", "DSharpPlus-demo\DSharpPlus-demo.csproj", "{FF52DC17-D921-4DF7-9F20-A69296839A20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{9A6F7BF5-A557-4B6A-A1CE-34A6C43DCEFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A6F7BF5-A557-4B6A-A1CE-34A6C43DCEFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A6F7BF5-A557-4B6A-A1CE-34A6C43DCEFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95F748AC-9B0D-4468-8C24-D335F4B29F41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95F748AC-9B0D-4468-8C24-D335F4B29F41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95F748AC-9B0D-4468-8C24-D335F4B29F41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95F748AC-9B0D-4468-8C24-D335F4B29F41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF52DC17-D921-4DF7-9F20-A69296839A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF52DC17-D921-4DF7-9F20-A69296839A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF52DC17-D921-4DF7-9F20-A69296839A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF52DC17-D921-4DF7-9F20-A69296839A20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
